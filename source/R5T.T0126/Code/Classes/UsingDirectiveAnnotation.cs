@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace R5T.T0126
 {
-    public class UsingDirectiveAnnotation : SyntaxNodeSyntaxAnnotation<UsingDirectiveSyntax>
+    public class UsingDirectiveAnnotation : SyntaxNodeAnnotation<UsingDirectiveSyntax>
     {
         #region Static
 

@@ -13,19 +13,19 @@ namespace System
     public static partial class SyntaxNodeExtensions
     {
         public static TNode Annotate_Typed<TNode>(this TNode node,
-            out SyntaxNodeSyntaxAnnotation<TNode> annotation)
+            out SyntaxNodeAnnotation<TNode> annotation)
             where TNode : SyntaxNode
         {
             var output = node.Annotate(out SyntaxAnnotation untypedAnnotation);
 
-            annotation = SyntaxNodeSyntaxAnnotation.From<TNode>(untypedAnnotation);
+            annotation = SyntaxNodeAnnotation.From<TNode>(untypedAnnotation);
 
             return output;
         }
 
         public static TRootNode AnnotateNode_Typed<TRootNode, TNode>(this TRootNode rootNode,
             TNode node,
-            out SyntaxNodeSyntaxAnnotation<TNode> annotation)
+            out SyntaxNodeAnnotation<TNode> annotation)
             where TRootNode : SyntaxNode
             where TNode : SyntaxNode
         {
@@ -33,9 +33,24 @@ namespace System
                 node,
                 out SyntaxAnnotation untypedAnnotation);
 
-            annotation = SyntaxNodeSyntaxAnnotation.From<TNode>(untypedAnnotation);
+            annotation = SyntaxNodeAnnotation.From<TNode>(untypedAnnotation);
 
             return output;
+        }
+
+        public static TNode AnnotateNodes_Typed<TNode, TDescendantNode>(this TNode node,
+            IEnumerable<TDescendantNode> descendantNodes,
+            out Dictionary<TDescendantNode, SyntaxNodeAnnotation<TDescendantNode>> annotationsByInputNode)
+            where TNode : SyntaxNode
+            where TDescendantNode : SyntaxNode
+        {
+            var outputNode = node.AnnotateNodes(
+                descendantNodes,
+                out var untypedAnnotationsByInputNode);
+
+            annotationsByInputNode = untypedAnnotationsByInputNode.ToTypedAnnotationsByNode();
+
+            return outputNode;
         }
 
         public static TNode AnnotateNodes_Typed<TNode, TDescendantNode, TTypedSyntaxAnnotation>(this TNode node,
@@ -44,7 +59,7 @@ namespace System
             out Dictionary<TDescendantNode, TTypedSyntaxAnnotation> annotationsByInputNode)
             where TNode : SyntaxNode
             where TDescendantNode : SyntaxNode
-            where TTypedSyntaxAnnotation : SyntaxNodeSyntaxAnnotation<TDescendantNode>
+            where TTypedSyntaxAnnotation : SyntaxNodeAnnotation<TDescendantNode>
         {
             var outputNode = node.AnnotateNodes(
                 descendantNodes,
@@ -57,7 +72,7 @@ namespace System
         }
 
         public static TOut Get<TRootNode, TNode, TOut>(this TRootNode rootNode,
-            SyntaxNodeSyntaxAnnotation<TNode> annotation,
+            ISyntaxNodeAnnotation<TNode> annotation,
             Func<TNode, TOut> selector)
             where TRootNode : SyntaxNode
             where TNode : SyntaxNode
@@ -69,7 +84,7 @@ namespace System
         }
 
         public static TNode GetAnnotatedNode_Typed<TRootNode, TNode>(this TRootNode rootNode,
-            SyntaxNodeSyntaxAnnotation<TNode> annotation)
+            ISyntaxNodeAnnotation<TNode> annotation)
             where TRootNode : SyntaxNode
             where TNode : SyntaxNode
         {
@@ -77,8 +92,22 @@ namespace System
             return node;
         }
 
+        public static Dictionary<ISyntaxNodeAnnotation<TNode>, TNode> GetAnnotatedNodes_Typed<TRootNode, TNode>(this TRootNode rootNode,
+            IEnumerable<ISyntaxNodeAnnotation<TNode>> annotations)
+            where TRootNode : SyntaxNode
+            where TNode : SyntaxNode
+        {
+            var output = annotations
+                .Select(x => new { Annotation = x, Node = rootNode.GetAnnotatedNode_Typed(x) })
+                .ToDictionary(
+                    x => x.Annotation,
+                    x => x.Node);
+
+            return output;
+        }
+
         public static async Task<TRootNode> Modify_Typed<TRootNode, TNode>(this TRootNode rootNode,
-            SyntaxNodeSyntaxAnnotation<TNode> annotation,
+            SyntaxNodeAnnotation<TNode> annotation,
             Func<TNode, Task<TNode>> nodeModificationAction)
             where TRootNode : SyntaxNode
             where TNode : SyntaxNode
@@ -91,8 +120,8 @@ namespace System
             return outputCompilationUnit;
         }
 
-        public static TRootNode ModifySynchronous_Typed<TRootNode, TNode>(this TRootNode rootNode,
-            SyntaxNodeSyntaxAnnotation<TNode> annotation,
+        public static TRootNode Modify_TypedSynchronous<TRootNode, TNode>(this TRootNode rootNode,
+            SyntaxNodeAnnotation<TNode> annotation,
             Func<TNode, TNode> nodeModificationAction)
             where TRootNode : SyntaxNode
             where TNode : SyntaxNode

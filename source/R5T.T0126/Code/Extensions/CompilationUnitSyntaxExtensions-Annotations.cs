@@ -15,7 +15,7 @@ namespace R5T.T0126
 
         public static CompilationUnitSyntax AnnotateNode_Typed<TNode>(this CompilationUnitSyntax compilationUnit,
             TNode node,
-            out SyntaxNodeSyntaxAnnotation<TNode> annotation,
+            out SyntaxNodeAnnotation<TNode> annotation,
             out TNode annotatedNode)
             where TNode : SyntaxNode
         {
@@ -33,7 +33,7 @@ namespace R5T.T0126
             Func<SyntaxAnnotation, TTypedSyntaxAnnotation> typedSyntaxAnnotationConstructor,
             out Dictionary<TNode, TTypedSyntaxAnnotation> annotationsByInputNode)
             where TNode : SyntaxNode
-            where TTypedSyntaxAnnotation : SyntaxNodeSyntaxAnnotation<TNode>
+            where TTypedSyntaxAnnotation : SyntaxNodeAnnotation<TNode>
         {
             var outputNode = compilationUnit.AnnotateNodes(
                 descendantNodes,
@@ -46,7 +46,7 @@ namespace R5T.T0126
         }
 
         public static TOut Get<TNode, TOut>(this CompilationUnitSyntax compilationUnit,
-            SyntaxNodeSyntaxAnnotation<TNode> annotation,
+            SyntaxNodeAnnotation<TNode> annotation,
             Func<TNode, TOut> selector)
             where TNode : SyntaxNode
         {
@@ -57,7 +57,7 @@ namespace R5T.T0126
         }
 
         public static TNode GetAnnotatedNode_Typed<TNode>(this CompilationUnitSyntax compilationUnit,
-            SyntaxNodeSyntaxAnnotation<TNode> annotation)
+            SyntaxNodeAnnotation<TNode> annotation)
             where TNode : SyntaxNode
         {
             var node = compilationUnit.GetAnnotatedNode(annotation.SyntaxAnnotation) as TNode;
@@ -65,7 +65,7 @@ namespace R5T.T0126
         }
 
         public static async Task<CompilationUnitSyntax> Modify_Typed<TNode>(this CompilationUnitSyntax compilationUnit,
-            SyntaxNodeSyntaxAnnotation<TNode> annotation,
+            SyntaxNodeAnnotation<TNode> annotation,
             Func<TNode, Task<TNode>> nodeModificationAction)
             where TNode : SyntaxNode
         {
@@ -78,7 +78,7 @@ namespace R5T.T0126
         }
 
         public static CompilationUnitSyntax ModifySynchronous_Typed<TNode>(this CompilationUnitSyntax compilationUnit,
-            SyntaxNodeSyntaxAnnotation<TNode> annotation,
+            SyntaxNodeAnnotation<TNode> annotation,
             Func<TNode, TNode> nodeModificationAction)
             where TNode : SyntaxNode
         {

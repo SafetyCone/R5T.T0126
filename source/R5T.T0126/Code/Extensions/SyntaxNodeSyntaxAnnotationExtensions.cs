@@ -31,7 +31,7 @@ namespace System
         //    return output;
         //}
 
-        public static TOut Get<TNode, TOut>(this SyntaxNodeSyntaxAnnotation<TNode> annotation,
+        public static TOut Get<TNode, TOut>(this ISyntaxNodeAnnotation<TNode> annotation,
             CompilationUnitSyntax compilationUnit,
             Func<TNode, TOut> selector)
             where TNode : SyntaxNode
@@ -42,7 +42,7 @@ namespace System
             return output;
         }
 
-        public static TOut Get<TRootNode, TNode, TOut>(this SyntaxNodeSyntaxAnnotation<TNode> annotation,
+        public static TOut Get<TRootNode, TNode, TOut>(this SyntaxNodeAnnotation<TNode> annotation,
             TRootNode rootNode,
             Func<TNode, TOut> selector)
             where TRootNode : SyntaxNode
@@ -54,7 +54,7 @@ namespace System
             return output;
         }
 
-        public static TNode GetAnnotatedNode_Typed<TRootNode, TNode>(this SyntaxNodeSyntaxAnnotation<TNode> annotation,
+        public static TNode GetAnnotatedNode_Typed<TRootNode, TNode>(this SyntaxNodeAnnotation<TNode> annotation,
             TRootNode rootNode)
             where TRootNode : SyntaxNode
             where TNode : SyntaxNode
@@ -63,7 +63,7 @@ namespace System
             return node;
         }
 
-        public static async Task<CompilationUnitSyntax> Modify<TNode>(this SyntaxNodeSyntaxAnnotation<TNode> annotation,
+        public static async Task<CompilationUnitSyntax> Modify<TNode>(this SyntaxNodeAnnotation<TNode> annotation,
             CompilationUnitSyntax compilationUnit,
             Func<TNode, Task<TNode>> nodeModificationAction)
             where TNode : SyntaxNode
@@ -76,7 +76,7 @@ namespace System
             return outputCompilationUnit;
         }
 
-        public static CompilationUnitSyntax ModifySynchronous<TNode>(this SyntaxNodeSyntaxAnnotation<TNode> annotation,
+        public static CompilationUnitSyntax ModifySynchronous<TNode>(this SyntaxNodeAnnotation<TNode> annotation,
             CompilationUnitSyntax compilationUnit,
             Func<TNode, TNode> nodeModificationAction)
             where TNode : SyntaxNode
@@ -89,7 +89,7 @@ namespace System
             return outputCompilationUnit;
         }
 
-        public static async Task<TRootNode> Modify<TRootNode, TNode>(this SyntaxNodeSyntaxAnnotation<TNode> annotation,
+        public static async Task<TRootNode> Modify<TRootNode, TNode>(this SyntaxNodeAnnotation<TNode> annotation,
             TRootNode rootNode,
             Func<TNode, Task<TNode>> nodeModificationAction)
             where TRootNode : SyntaxNode
@@ -103,7 +103,7 @@ namespace System
             return outputCompilationUnit;
         }
 
-        public static TRootNode ModifySynchronous<TRootNode, TNode>(this SyntaxNodeSyntaxAnnotation<TNode> annotation,
+        public static TRootNode ModifySynchronous<TRootNode, TNode>(this SyntaxNodeAnnotation<TNode> annotation,
             TRootNode rootNode,
             Func<TNode, TNode> nodeModificationAction)
             where TRootNode : SyntaxNode
