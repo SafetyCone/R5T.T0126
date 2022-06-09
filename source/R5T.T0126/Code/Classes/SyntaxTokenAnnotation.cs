@@ -5,10 +5,15 @@ using Microsoft.CodeAnalysis;
 
 namespace R5T.T0126
 {
-    public class SyntaxTokenAnnotation : TypedSyntaxAnnotation<SyntaxToken>
+    public class SyntaxTokenAnnotation : TypedSyntaxAnnotation<SyntaxToken>, ISyntaxTokenAnnotation
     {
         #region Static
 
+        public static ISyntaxTokenAnnotation Initialize()
+        {
+            return null;
+        }
+        
         public static SyntaxTokenAnnotation From(SyntaxAnnotation annotation)
         {
             var output = new SyntaxTokenAnnotation(annotation);

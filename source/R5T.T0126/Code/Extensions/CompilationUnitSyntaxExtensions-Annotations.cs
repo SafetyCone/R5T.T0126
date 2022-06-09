@@ -15,7 +15,7 @@ namespace R5T.T0126
 
         public static CompilationUnitSyntax AnnotateNode_Typed<TNode>(this CompilationUnitSyntax compilationUnit,
             TNode node,
-            out SyntaxNodeAnnotation<TNode> annotation,
+            out ISyntaxNodeAnnotation<TNode> annotation,
             out TNode annotatedNode)
             where TNode : SyntaxNode
         {

@@ -9,11 +9,6 @@ namespace System
 {
     public static class ClassDeclarationSyntaxExtensions
     {
-        public static ClassDeclarationSyntax AnnotateTyped(this ClassDeclarationSyntax classDeclaration,
-            out ClassAnnotation annotation)
-        {
-            var output = ClassAnnotation.From(classDeclaration, out annotation);
-            return output;
-        }
+
     }
 }

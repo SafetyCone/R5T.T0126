@@ -9,6 +9,15 @@ namespace R5T.T0126
     {
         #region Static
 
+        /// <summary>
+        /// For initializing syntax node annotations (perhaps when the value is set within anonymous functions).
+        /// </summary>
+        public static ISyntaxNodeAnnotation<TNode> Initialize<TNode>()
+            where TNode : SyntaxNode
+        {
+            return null;
+        }
+
         public static SyntaxNodeAnnotation<TNode> From<TNode>(SyntaxAnnotation annotation)
             where TNode : SyntaxNode
         {
